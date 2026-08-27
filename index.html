@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Begraafplaatsen Zulte — Gravenkaart</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar__title">
+      <span class="topbar__crest" aria-hidden="true">⚹</span>
+      <div>
+        <h1>Gravenkaart — Begraafplaatsen Zulte</h1>
+        <p>Overzicht van alle graven, met markering van herbruikbare graven en peterschappen</p>
+      </div>
+    </div>
+    <div id="loadingIndicator" class="topbar__status">Data wordt geladen…</div>
+  </header>
+
+  <div class="layout">
+    <div id="map"></div>
+
+    <aside id="sidePanel" class="side-panel" aria-label="Kaartlagen en informatie">
+      <section class="side-section layers-section">
+        <button id="layersToggle" class="side-section__toggle" type="button" aria-expanded="true"
+          aria-controls="layersBody">
+          <span>Kaartlagen</span>
+          <span class="side-section__chevron" aria-hidden="true">⌃</span>
+        </button>
+        <div id="layersBody" class="side-section__body">
+          <div id="layersControlHost"></div>
+        </div>
+      </section>
+
+      <section id="detailPanel" class="side-section detail-panel detail-panel--hidden" aria-live="polite">
+        <div class="detail-panel__header">
+          <h2 id="detailTitle">Graf</h2>
+          <button id="detailClose" class="detail-panel__close" aria-label="Informatie sluiten">&times;</button>
+        </div>
+        <div id="detailBody" class="detail-panel__body"></div>
+      </section>
+    </aside>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+
+</html>

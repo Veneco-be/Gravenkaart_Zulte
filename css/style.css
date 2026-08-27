@@ -1,0 +1,769 @@
+:root {
+  --navy: #17324d;
+  --navy-dark: #0f2337;
+  --paper: #f5f6f3;
+  --ink: #1c2530;
+  --ink-soft: #5b6672;
+  --line: #dbe0e3;
+  --white: #ffffff;
+
+  --c-all: #7d8a93;       /* alle graven */
+  --c-herbruik: #2f8f76;  /* H - herbruikbaar */
+  --c-peter: #b8802e;     /* P - peterschap */
+
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* ---------- Topbar ---------- */
+
+.topbar {
+  height: 64px;
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+  z-index: 1200;
+  position: relative;
+}
+
+.topbar__title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar__crest {
+  font-size: 26px;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+.topbar h1 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.topbar p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #c7d3dd;
+}
+
+.topbar__status {
+  font-size: 12px;
+  color: #c7d3dd;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  position: relative;
+  height: calc(100% - 64px);
+  width: 100%;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  background: #e7eae6;
+}
+
+/* ---------- Detail panel ---------- */
+
+.detail-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(15, 35, 55, 0.18);
+  display: flex;
+  flex-direction: column;
+  z-index: 900;
+  transform: translateX(0);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  overflow: hidden;
+}
+
+.detail-panel--hidden {
+  transform: translateX(16px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.detail-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.detail-panel__header h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin: 0;
+  color: var(--navy);
+}
+
+.detail-panel__close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.detail-panel__close:hover { background: var(--line); color: var(--ink); }
+
+.detail-panel__body {
+  padding: 14px 16px 18px;
+  overflow-y: auto;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.status-badge--herbruik { background: rgba(47,143,118,0.12); color: var(--c-herbruik); }
+.status-badge--peter { background: rgba(184,128,46,0.14); color: var(--c-peter); }
+.status-badge--none { background: rgba(125,138,147,0.14); color: var(--ink-soft); }
+
+.attr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.attr-table tr {
+  border-bottom: 1px solid var(--line);
+}
+.attr-table tr:last-child { border-bottom: none; }
+
+.attr-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 7px 10px 7px 0;
+  width: 46%;
+  vertical-align: top;
+}
+
+.attr-table td {
+  text-align: left;
+  padding: 7px 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  vertical-align: top;
+}
+
+.detail-panel__empty {
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding-top: 4px;
+}
+
+/* ---------- Leaflet control tweaks ---------- */
+
+.leaflet-control-layers {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(15,35,55,0.14) !important;
+  border: 1px solid var(--line) !important;
+  font-family: var(--font-body);
+}
+
+.leaflet-control-layers-expanded {
+  padding: 12px 14px !important;
+  font-size: 13px;
+}
+
+.legend {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(15,35,55,0.14);
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.legend__title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.legend__row { display: flex; align-items: center; gap: 8px; }
+.legend__swatch {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  flex: none;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+}
+.leaflet-popup-content {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  .topbar p { display: none; }
+  .detail-panel {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    top: auto;
+    bottom: 12px;
+    max-height: 55vh;
+  }
+}
+
+/* ---------- Zijpaneel: lagen boven info ---------- */
+.side-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.side-section {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(15, 35, 55, 0.18);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.side-section__toggle {
+  width: 100%;
+  border: 0;
+  background: var(--paper);
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.side-section__chevron {
+  font-family: var(--font-body);
+  transition: transform 0.18s ease;
+}
+
+.side-section__toggle[aria-expanded="false"] .side-section__chevron {
+  transform: rotate(180deg);
+}
+
+.side-section__body[hidden] {
+  display: none;
+}
+
+#layersControlHost .leaflet-control-layers {
+  position: static;
+  float: none;
+  margin: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+#layersControlHost .leaflet-control-layers-expanded {
+  padding: 12px 14px !important;
+}
+
+/* Overschrijft de vroegere zwevende detailpanel-positionering. */
+.side-panel .detail-panel {
+  position: static;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: none;
+  max-height: min(56vh, 520px);
+  box-shadow: 0 8px 28px rgba(15, 35, 55, 0.18);
+  transform: none;
+  transition: opacity 0.18s ease;
+}
+
+.side-panel .detail-panel--hidden {
+  display: none;
+  transform: none;
+  opacity: 0;
+}
+
+.side-panel .detail-panel__body {
+  overflow-y: auto;
+}
+
+/* Zoomcontrol blijft enkel rechts en schuift onder het zijpaneel. */
+.leaflet-top.leaflet-right .leaflet-control-zoom {
+  margin-top: 16px;
+  margin-right: 372px;
+}
+
+@media (max-width: 760px) {
+  .side-panel {
+    top: 12px;
+    right: 12px;
+    width: min(320px, calc(100vw - 24px));
+    max-height: calc(100% - 24px);
+  }
+
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 12px;
+    margin-right: 344px;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-panel {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 12px;
+    margin-right: 12px;
+    top: 120px;
+  }
+}
+
+/* ---------- Foto graf ---------- */
+
+.grave-photo {
+  margin: 0 0 14px;
+}
+
+.grave-photo__link {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.grave-photo img {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.grave-photo__link:hover img {
+  transform: scale(1.015);
+  opacity: 0.92;
+}
+
+.grave-photo figcaption {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ======================================================================
+   Responsive layout v2
+   Desktop -> tablet -> smartphone
+   ====================================================================== */
+
+/* Laat de beschikbare schermhoogte bepalen hoe groot de kaart is.
+   Dit blijft ook correct wanneer de topbar op kleine schermen hoger wordt. */
+body {
+  min-height: 100dvh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  flex: 0 0 64px;
+  min-height: 64px;
+}
+
+.layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+
+/* Lange waarden en laagnamen mogen nooit het paneel uit duwen. */
+.side-panel,
+.side-section,
+.detail-panel,
+.detail-panel__body,
+.attr-table,
+.attr-table th,
+.attr-table td,
+.leaflet-control-layers label {
+  min-width: 0;
+}
+
+.attr-table th,
+.attr-table td,
+.leaflet-control-layers label {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Foto blijft binnen het infopaneel en behoudt zijn verhouding. */
+.grave-photo__link {
+  width: 100%;
+}
+
+.grave-photo img {
+  width: 100%;
+  height: auto;
+  max-height: min(34vh, 300px);
+  object-fit: contain;
+}
+
+/* ---------- Tablet / compacte desktop ---------- */
+@media (max-width: 1024px) {
+  .topbar {
+    padding-inline: 16px;
+  }
+
+  .topbar__title {
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .topbar__title > div {
+    min-width: 0;
+  }
+
+  .topbar h1,
+  .topbar p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar__status {
+    flex: 0 1 auto;
+    max-width: 32vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .side-panel {
+    top: 12px;
+    right: 12px;
+    width: clamp(280px, 36vw, 330px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100% - 24px);
+  }
+
+  .side-panel .detail-panel {
+    max-height: min(58vh, 500px);
+  }
+
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 12px;
+    margin-right: calc(clamp(280px, 36vw, 330px) + 24px);
+  }
+}
+
+/* ---------- Smartphone / smalle tablet ---------- */
+@media (max-width: 700px) {
+  body {
+    min-height: 100svh;
+    height: 100svh;
+  }
+
+  .topbar {
+    flex-basis: auto;
+    min-height: 56px;
+    height: auto;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .topbar__crest {
+    display: none;
+  }
+
+  .topbar__title {
+    flex: 1 1 auto;
+  }
+
+  .topbar h1 {
+    font-size: 16px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .topbar p {
+    display: none;
+  }
+
+  .topbar__status {
+    flex: 0 0 auto;
+    max-width: 38vw;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  /* Op mobiel ligt het paneel als compacte kaart bovenop de kaart.
+     Het wordt niet hoger dan 62% van het kaartvlak. */
+  .side-panel {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: auto;
+    width: auto;
+    max-width: none;
+    max-height: 62%;
+    gap: 6px;
+  }
+
+  .side-section {
+    border-radius: 8px;
+  }
+
+  .side-section__toggle,
+  .detail-panel__header {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+
+  .side-section__toggle,
+  .detail-panel__header h2 {
+    font-size: 14px;
+  }
+
+  #layersControlHost .leaflet-control-layers-expanded {
+    padding: 8px 10px !important;
+    font-size: 12px;
+  }
+
+  .leaflet-control-layers label {
+    margin-block: 3px;
+    line-height: 1.35;
+  }
+
+  .side-panel .detail-panel {
+    max-height: min(48vh, 420px);
+  }
+
+  .detail-panel__body {
+    padding: 10px 12px 14px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .attr-table {
+    font-size: 12px;
+  }
+
+  .attr-table th {
+    width: 42%;
+    padding: 6px 8px 6px 0;
+  }
+
+  .attr-table td {
+    padding: 6px 0;
+  }
+
+  .status-badge {
+    margin-bottom: 9px;
+    font-size: 10px;
+  }
+
+  .grave-photo {
+    margin-bottom: 10px;
+  }
+
+  .grave-photo img {
+    max-height: 26vh;
+  }
+
+  .grave-photo figcaption {
+    font-size: 10px;
+  }
+
+  /* Controls blijven bereikbaar naast/onder het mobiele paneel. */
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 8px;
+    margin-right: 8px;
+    transform: translateY(52px);
+  }
+
+  .legend {
+    padding: 7px 9px;
+    font-size: 10px;
+    line-height: 1.45;
+    max-width: calc(100vw - 80px);
+  }
+
+  .legend__title {
+    margin-bottom: 3px;
+    font-size: 9px;
+  }
+
+  .legend__row {
+    gap: 5px;
+  }
+
+  .legend__swatch {
+    width: 10px;
+    height: 10px;
+  }
+
+  .leaflet-control-attribution {
+    max-width: 72vw;
+    font-size: 8px !important;
+    line-height: 1.25;
+  }
+}
+
+/* ---------- Zeer smalle smartphones ---------- */
+@media (max-width: 420px) {
+  .topbar {
+    padding-inline: 10px;
+  }
+
+  .topbar h1 {
+    font-size: 14px;
+  }
+
+  .topbar__status {
+    max-width: 34vw;
+    font-size: 9px;
+  }
+
+  .side-panel {
+    left: 6px;
+    right: 6px;
+    top: 6px;
+    max-height: 64%;
+  }
+
+  .side-panel .detail-panel {
+    max-height: 50vh;
+  }
+
+  .detail-panel__header h2 {
+    max-width: calc(100% - 38px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .attr-table th,
+  .attr-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .attr-table th {
+    padding: 7px 0 1px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.25px;
+  }
+
+  .attr-table td {
+    padding: 0 0 7px;
+  }
+
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 6px;
+    margin-right: 6px;
+  }
+}
+
+/* Landscape op een lage smartphone: beperk panelen sterker in de hoogte. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .topbar {
+    min-height: 46px;
+    padding-block: 5px;
+  }
+
+  .topbar p,
+  .topbar__crest {
+    display: none;
+  }
+
+  .side-panel {
+    max-height: calc(100% - 12px);
+    width: min(320px, 42vw);
+    left: auto;
+    right: 6px;
+    top: 6px;
+  }
+
+  .side-panel .detail-panel {
+    max-height: 58vh;
+  }
+
+  .grave-photo img {
+    max-height: 22vh;
+  }
+
+  .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-right: calc(min(320px, 42vw) + 18px);
+    transform: none;
+  }
+}
